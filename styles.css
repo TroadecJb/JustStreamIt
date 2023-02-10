@@ -1,0 +1,54 @@
+body {
+    background-color: #7c5a47;
+    color: white;
+    font-family: "times new roman";
+    margin: 0;
+}
+
+/* Header */
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: red solid;
+}
+
+.header-logo img {
+    margin-top: 10px;
+    width: 40%;
+}
+
+.best {
+    background-color: blue;
+    margin: auto;
+    padding: 5% 2% 2% 5%;
+    align-items: center;
+    width: 80%;
+
+}
+
+.best-movie-title {
+    font-size: 3rem;
+}
+
+.best-cover img {
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
+    float: right;
+    max-width: 280px;
+    min-width: 150px;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 100px;
+    background-color: olive;
+    width: 80%;
+    margin: auto;
+    padding: 5% 2% 2% 5%;
+    align-items: center;
+    justify-content: space-between;
+}
