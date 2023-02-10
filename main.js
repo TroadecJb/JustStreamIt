@@ -30,8 +30,14 @@ async function fetchBest() {
 //     para.innerHTML = ;
 // }
 
+function modal() {
+    el = document.getElementById("myModal");
+    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+}
 
+var btn = document.getElementById("info-btn");
 
+btn.addEventListener("click", modal);
 
 window.addEventListener('load', () => {
     fetchBest()
