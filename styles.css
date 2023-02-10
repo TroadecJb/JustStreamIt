@@ -1,5 +1,5 @@
 body {
-    background-color: #7c5a47;
+    background-color: #bebebe;
     color: white;
     font-family: "times new roman";
     margin: 0;
@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    border: red solid;
+    border: rgb(114, 63, 63) solid;
 }
 
 .header-logo img {
@@ -43,14 +43,31 @@ body {
 
 .categories {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
     gap: 100px;
-    background-color: olive;
+    background-color: rgb(37, 37, 32);
     width: 80%;
     margin: auto;
     padding: 5% 2% 2% 5%;
     align-items: center;
     justify-content: space-between;
+}
+
+.category {
+    display: flex;
+    flex-direction: row;
+    border: #bebebe solid;
+}
+
+article {
+    border: rgb(65, 2, 65) solid;
+    background-color: rgb(42, 10, 61);
+}
+
+article img {
+    border-radius: 15px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
+    float: right;
 }
 
 #myModal {
