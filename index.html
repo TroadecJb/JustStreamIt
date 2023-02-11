@@ -23,30 +23,28 @@
 
     <main>
         <section class="best" id="best-movie">
+            <div class="best-info">
+                <div class="best-movie">
+                    <h1 class="best-movie-title" id="best-title">""</h1>
+                </div>
+                <div class="best-movie-description">
+                    <p class="best-desc" id="top-desc">""</p>
+                </div>
+                <button class="best-modalBtn">more info</button>
+            </div>
             <div class="best-cover" id="cover0">
                 <img alt="movie-cover" src="img/keyboard.png">
             </div>
-            <div class="best-movie">
-                <h1 class="best-movie-title" id="best-title">""</h1>
-            </div>
-            <!-- <div class="buttons"> -->
-            <button id="info-btn">more info</button>
-            <!-- </div> -->
-            <div class="best-movie-description">
-                <p class="best-desc" id="top-desc">""</p>
-            </div>
         </section>
         <section class="categories" id="categories"></section>
-
-
-        <button id="myBtn">Open Modal</button>
-        <div id="myModal" class="modal"> <!-- the modal -->
-            <div> <!-- modal content-->
-                <p>texte de la fenêtre modal</p>
-            </div>
-        </div>
     </main>
 
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <p>test</p>
+        </div>
+    </div>
 
     <script src="main.js"></script>
 </body>
