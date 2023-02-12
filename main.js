@@ -4,21 +4,29 @@ const mainURL = "http://localhost:8000/api/v1/titles/"
 //* récupération des infos
 
 async function fetchBest() {
-    // variable des éléments du meilleur film
-    const bestTitle = document.getElementById("best-title");
-    const bestCover = document.getElementsByClassName('best-cover')[0].getElementsByTagName('img')[0];
-    const bestDescrip = document.getElementById("top-desc");
-    const bestModalBtn = document.getElementsByClassName("best-modalBtn")[0];
     // récupération des informations
     const response = await fetch(mainURL + "?sort_by=-imdb_score");
     const data = await response.json();
     const responseBestDescrip = await fetch(data["results"][0]["url"]);
     const dataBestDescrip = await responseBestDescrip.json();
-    // assignation du contenu aux éléments 
-    bestModalBtn.setAttribute("onclick", "openModal()");
+
+    // variable des éléments du meilleur film
+    const bestTitle = document.getElementById("best-title");
     bestTitle.innerText = data["results"][0]["title"];
+
+    const bestCover = document.getElementsByClassName('best-cover')[0].getElementsByTagName('img')[0];
     bestCover.src = data["results"][0]["image_url"];
+
+    const bestDescrip = document.getElementById("top-desc");
     bestDescrip.innerText = dataBestDescrip["description"];
+
+    const bestModalBtn = document.getElementsByClassName("best-modalBtn")[0];
+    bestModalBtn.setAttribute("onclick", "openModal()");
+
+
+
+
+
 }
 
 async function fetchCategories(name) {
@@ -35,13 +43,22 @@ async function createCarrouselByCat(categoryName, numberFilms) { // pas encore c
 
     const category = document.createElement('section');
     category.classList.add('category');
+    sectionCategories.appendChild(category);
+
     const carrousel = document.createElement('section');
     carrousel.classList.add('container');
+    category.appendChild(carrousel);
+
     const categoryTitle = document.createElement('h2');
     categoryTitle.innerHTML = categoryName;
+    category.appendChild(categoryTitle);
+
     const carrouselContent = document.createElement('div');
     carrouselContent.classList.add('carrousel-content');
+    carrouselContent.setAttribute("id", `${categoryName}`);
+    carrousel.appendChild(carrouselContent);
 
+    // navigation control
     const navControl = document.createElement('div');
     navControl.classList.add("nav-control");
     const prevBtn = document.createElement('button');
@@ -50,22 +67,16 @@ async function createCarrouselByCat(categoryName, numberFilms) { // pas encore c
     prevBtn.setAttribute("id", "left");
     prevBtn.setAttribute("onclick", "moveCarrouselBack");
     prevBtn.innerHTML = "previous";
+    navControl.appendChild(prevBtn);
+
     const nextBtn = document.createElement('button');
     nextBtn.classList.add('btn');
     nextBtn.setAttribute("name", "next");
     nextBtn.setAttribute("id", "right");
     nextBtn.setAttribute("onclick", "moveCarrouselForward");
     nextBtn.innerHTML = "next";
-
-
-    navControl.appendChild(prevBtn);
     navControl.appendChild(nextBtn);
 
-
-    sectionCategories.appendChild(category);
-    category.appendChild(categoryTitle);
-    category.appendChild(carrousel);
-    carrousel.appendChild(carrouselContent);
     carrousel.appendChild(navControl);
 
     for (let i = 0; i < numberFilms; i++) {
@@ -78,7 +89,9 @@ async function createCarrouselByCat(categoryName, numberFilms) { // pas encore c
         const filmCover = document.createElement('img');
         const filmDescription = document.createElement('p');
         const filmInfoBtn = document.createElement('button');
+        const filmTextContainer = document.createElement('div');
 
+        ficheFilm.classList.add('film-article');
         filmTitre.innerText = catData["results"][i]["title"];
         filmDescription.innerHTML = textDescription["description"];
         filmCover.src = catData["results"][i]["image_url"];
@@ -88,10 +101,11 @@ async function createCarrouselByCat(categoryName, numberFilms) { // pas encore c
 
 
         carrouselContent.appendChild(ficheFilm);
-        ficheFilm.appendChild(filmTitre);
-        ficheFilm.appendChild(filmDescription);
+        ficheFilm.appendChild(filmTextContainer);
+        filmTextContainer.appendChild(filmTitre);
+        filmTextContainer.appendChild(filmDescription);
+        filmTextContainer.appendChild(filmInfoBtn);
         ficheFilm.appendChild(filmCover);
-        ficheFilm.appendChild(filmInfoBtn);
 
     };
 }
