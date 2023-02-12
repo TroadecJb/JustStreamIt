@@ -74,7 +74,10 @@ body {
 }
 
 article {
-    flex-grow: 1;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
     border: rgb(65, 2, 65) solid;
     background-color: rgb(42, 10, 61);
 }
