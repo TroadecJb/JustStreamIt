@@ -25,7 +25,7 @@ async function fetchBest() {
 
 }
 
-async function fetchCategories(name) {
+async function fetchCategories(name, maxFilm) {
     const response = await fetch(mainURL + "?sort_by=-imdb_score&genre=" + name);
 
     if (!response.ok)
@@ -33,12 +33,20 @@ async function fetchCategories(name) {
 
     const data = await response.json();
 
-    return data;
+    let movieData = Array(...data.results); // crée une liste à partir de la clef "results", avec les 5 premiers films(longueur d'une page get de l'api)
+
+    if (movieData.length < maxFilm) {
+        const secondResponse = await fetch(data.next);
+        const secondData = await secondResponse.json();
+        const listSecondData = Array(...secondData.results);
+        movieData.push(...listSecondData);
+    };
+
+    return movieData;
 }
 
-//* Création des éléments
+//* Création des éléments carrousel
 async function createCarrouselByCat(categoryName, numberFilms) { // pas encore carrousel
-    const catData = await fetchCategories(categoryName);
     const sectionCategories = document.getElementById("categories");
 
     const category = document.createElement('section');
@@ -53,78 +61,88 @@ async function createCarrouselByCat(categoryName, numberFilms) { // pas encore c
     carrousel.classList.add('container');
     category.appendChild(carrousel);
 
-    const carrouselContent = document.createElement('div');
-    carrouselContent.classList.add('carrousel-content');
-    carrouselContent.setAttribute("id", `${categoryName}`);
-    carrousel.appendChild(carrouselContent);
-
-    // navigation control
-    const navControl = document.createElement('div');
-    navControl.classList.add("nav-control");
     const prevBtn = document.createElement('button');
     prevBtn.classList.add('btn');
     prevBtn.setAttribute("name", "previous");
     prevBtn.setAttribute("id", "left");
-    prevBtn.setAttribute("onclick", "moveCarrouselBack");
+    prevBtn.setAttribute("onclick", `moveCarrouselBack()`);
     prevBtn.innerHTML = "previous";
-    navControl.appendChild(prevBtn);
+    carrousel.appendChild(prevBtn);
+
+    const carrouselContent = document.createElement('div');
+    carrouselContent.classList.add('carrousel-content');
+    carrouselContent.setAttribute("id", `${categoryName}-container`);
+    carrousel.appendChild(carrouselContent);
 
     const nextBtn = document.createElement('button');
     nextBtn.classList.add('btn');
     nextBtn.setAttribute("name", "next");
     nextBtn.setAttribute("id", "right");
-    nextBtn.setAttribute("onclick", "moveCarrouselForward");
+    nextBtn.setAttribute("onclick", `moveCarrouselForward()`);
     nextBtn.innerHTML = "next";
-    navControl.appendChild(nextBtn);
+    carrousel.appendChild(nextBtn);
 
-    carrousel.appendChild(navControl);
+    console.log(categoryName + "-container");
 
-    for (let i = 0; i < numberFilms; i++) {
+    const categoryData = await fetchCategories(categoryName, numberFilms);
 
-        // const dataDescription = await fetch(catData["results"][i]["url"]);
-        // const textDescription = await dataDescription.json();
-
+    // crée un article pour chaque film
+    for (let i in categoryData) {
         const ficheFilm = document.createElement('article');
-        // const filmTitre = document.createElement('h2');
         const filmCover = document.createElement('img');
-        // const filmDescription = document.createElement('p');
         const filmInfoBtn = document.createElement('button');
-        // const filmTextContainer = document.createElement('div');
 
         ficheFilm.classList.add('film-article');
-        // filmTitre.innerText = catData["results"][i]["title"];
-        // filmDescription.innerHTML = textDescription["description"];
-        filmCover.src = catData["results"][i]["image_url"];
+        filmCover.src = categoryData[i]["image_url"];
         filmInfoBtn.classList.add('modalBtn');
-        filmInfoBtn.setAttribute("onclick", `openModal(${catData["results"][i]["id"]})`);
+        filmInfoBtn.classList.add('btn');
+        filmInfoBtn.setAttribute("onclick", `openModal(${categoryData[i]["id"]})`);
         filmInfoBtn.innerHTML = "more info";
 
-
         carrouselContent.appendChild(ficheFilm);
-        // ficheFilm.appendChild(filmTextContainer);
-        // filmTextContainer.appendChild(filmTitre);
-        // filmTextContainer.appendChild(filmDescription);
-        // filmTextContainer.appendChild(filmInfoBtn);
         ficheFilm.appendChild(filmInfoBtn);
         ficheFilm.appendChild(filmCover);
+
+        const ficheFilmWidth = ficheFilm.getBoundingClientRect().width;
+
+        ficheFilm.style.left = ficheFilmWidth * i + "px";
 
     };
 }
 
 // controle du Carrousel
 function moveCarrouselBack() {
+    let fichesCarousel = document.getElementsByClassName('film-article');
+    let listFichesCarousel = Array(...fichesCarousel);
+    let ficheFilmWidth = listFichesCarousel[0].getBoundingClientRect().width;
+    console.log(ficheFilmWidth);
+
+
+    for (let i in listFichesCarousel) {
+        const ficheWidth = listFichesCarousel[i].getBoundingClientRect().width;
+        const currentPosition = listFichesCarousel[i].style.left;
+        const cal = ficheWidth - currentPosition;
+        console.log(cal);
+        console.log(ficheWidth);
+        console.log(currentPosition);
+        listFichesCarousel[i].style.left = currentPosition - ficheWidth + 'px';
+    };
+
+
+
+    // for (let i in Array(...carousel)) {
+
+    //     carrousel[i].style.left = ficheFilmWidth * i + "px";
+    // };
+
 
 }
 
-function moveCarrouselForward() {
-
-}
 // modal
 function openModal(movieId) {   // ajouter un paramètre pour identifier le film en question
     let modal = document.getElementById("modal");
     let closeBtn = document.getElementsByClassName("close-btn")[0];
 
-    // ajouter fonction qui va récupérer les données du films et les assigner aux balises
     fetchModalData(movieId)
 
     modal.style.display = "block";
@@ -147,14 +165,15 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
     document.getElementById('modal-title').innerHTML = data["title"];
     document.getElementById('modal-year').innerHTML = data["year"];
     document.getElementById('modal-rated').innerHTML = data["rated"];
-    document.getElementById('modal-imdb').innerHTML = data["imdb-score"];
-    document.getElementById('modal-duration').innerHTML = data["duration"];
+    document.getElementById('modal-imdb').innerHTML = data["imdb-score"] + " /10";
+    document.getElementById('modal-duration').innerHTML = data["duration"] + " min";
     document.getElementById('modal-director').innerHTML = data["directors"]; //stocké sous forme de liste
     document.getElementById('modal-actors').innerHTML = data["actors"]; // stocké sous forme de liste
     document.getElementById('modal-pitch').innerHTML = data["description"];
     document.getElementById('modal-genre').innerHTML = data["genres"]; //stocké sous forme de liste
     document.getElementById('modal-country').innerHTML = data["countries"]; // stocké sous forme de liste
-    document.getElementById('modal-box-office').innerHTML = data["world_wide_gross_income"];
+    document.getElementById('modal-box-office').innerHTML = data["world_wide_gross_income"] + data["budget_currency"];
+    document.getElementById('modal-cover').src = data["image_url"];
 
 }
 
@@ -164,7 +183,8 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
 
 window.addEventListener('load', () => {
     fetchBest()
-    createCarrouselByCat("Adventure", 3)
+    createCarrouselByCat("Adventure", 10)
     createCarrouselByCat("Animation", 3)
-    createCarrouselByCat("Sport", 3)
+    createCarrouselByCat("Sport", 7)
+    createCarrouselByCat("Sci-fi", 7)
 });
