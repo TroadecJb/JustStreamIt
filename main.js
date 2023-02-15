@@ -27,8 +27,9 @@ async function fetchBest() {
 async function fetchCategories(name, maxFilm) {
     const response = await fetch(mainURL + "?sort_by=-imdb_score&genre=" + name);
 
-    if (!response.ok)
+    if (!response.ok) {
         return
+    }
 
     const data = await response.json();
 
@@ -93,9 +94,9 @@ async function createCarrouselByCat(categoryName, numberFilms) {
 
 
         ficheFilm.classList.add('film-article');
-        // ficheFilm.setAttribute("onclick", `openModal(${categoryData[i]["id"]})`);
+
         filmCover.src = categoryData[i]["image_url"];
-        // filmCover.classList.add('film-article');
+        filmCover.classList.add('img-article');
         filmCover.setAttribute("onclick", `openModal(${categoryData[i]["id"]})`);
 
         // carrousel.appendChild(filmCover);
@@ -111,11 +112,16 @@ async function createCarrouselByCat(categoryName, numberFilms) {
     carrouselcontainer.appendChild(carrousel);
 
     //répartion des éléments
+
     const fiches = carrousel.querySelectorAll(".film-article");
     let count = 0, positionLeft = 0, spaceRight = 0, dynamic = 0, marginLeft = 0, ef = 0;
 
-    spaceRight = fiches[0].offsetWidth * (fiches.length);
-    dynamic = fiches[0].offsetWidth * (fiches.length);
+    const ficheWidth = fiches[0].offsetWidth;
+    const ficheHeight = fiches[0].offsetHeight;
+    spaceRight = ficheWidth * (fiches.length);
+    dynamic = ficheWidth * (fiches.length);
+    carrousel.style.maxwidth = ficheWidth * 7 + "px";
+    carrousel.style.hmaxheight = ficheHeight + "px";
     carrousel.style.width = dynamic + "px";
     nextBtn.style.height = fiches[0].offsetHeight + "px";
     prevBtn.style.height = fiches[0].offsetHeight + "px";
@@ -126,7 +132,7 @@ async function createCarrouselByCat(categoryName, numberFilms) {
     function moveCarrouselForward() {
         spaceFinal = spaceRight - category.offsetWidth;
         if (spaceFinal > 0) {
-            positionLeft -= 250;
+            positionLeft -= ficheWidth;
             marginLeft = positionLeft;
             spaceRight = dynamic + positionLeft
 
@@ -142,7 +148,7 @@ async function createCarrouselByCat(categoryName, numberFilms) {
 
     function moveCarrouselBack() {
         if (count > 0) {
-            positionLeft += 250;
+            positionLeft += ficheWidth;
             carrousel.style.marginLeft = `${positionLeft}px`;
             marginLeft = positionLeft;
             spaceRight = dynamic + positionLeft
@@ -204,7 +210,7 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
 //* chargement de la page et màj des données
 window.addEventListener('load', () => {
     fetchBest()
-    createCarrouselByCat("Adventure", 20)
+    createCarrouselByCat("Adventure", 10)
     createCarrouselByCat("Animation", 10)
     createCarrouselByCat("Sport", 10)
     createCarrouselByCat("Sci-fi", 10)
