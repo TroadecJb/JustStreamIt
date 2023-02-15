@@ -22,7 +22,6 @@ async function fetchBest() {
 
     const bestModalBtn = document.getElementsByClassName("best-modalBtn")[0];
     bestModalBtn.setAttribute("onclick", `openModal(${data["results"][0]["id"]})`);
-
 }
 
 async function fetchCategories(name, maxFilm) {
@@ -41,109 +40,133 @@ async function fetchCategories(name, maxFilm) {
         const listSecondData = Array(...secondData.results);
         movieData.push(...listSecondData);
     };
-
     return movieData;
 }
 
 //* Création des éléments carrousel
-async function createCarrouselByCat(categoryName, numberFilms) { // pas encore carrousel
+async function createCarrouselByCat(categoryName, numberFilms) {
     const sectionCategories = document.getElementById("categories");
 
     const category = document.createElement('section');
     category.classList.add('category');
-    sectionCategories.appendChild(category);
+    category.setAttribute("id", `${categoryName}`);
 
     const categoryTitle = document.createElement('h2');
+    categoryTitle.classList.add("category-title");
     categoryTitle.innerHTML = categoryName;
-    category.appendChild(categoryTitle);
+
+    const carrouselcontainer = document.createElement('div');
+    carrouselcontainer.classList.add('content-container');
 
     const carrousel = document.createElement('section');
-    carrousel.classList.add('container');
-    category.appendChild(carrousel);
+    carrousel.classList.add('content');
+    carrousel.setAttribute("id", `${categoryName}content`);
 
-    const prevBtn = document.createElement('button');
+    const prevBtn = document.createElement('div');
+    prevBtn.classList.add('btn-prev');
     prevBtn.classList.add('btn');
     prevBtn.setAttribute("name", "previous");
     prevBtn.setAttribute("id", "left");
-    prevBtn.setAttribute("onclick", `moveCarrouselBack()`);
-    prevBtn.innerHTML = "previous";
-    carrousel.appendChild(prevBtn);
+    const prevBtnSymbol = document.createElement("div");
+    prevBtnSymbol.innerHTML = "&#8249;";
+    prevBtnSymbol.classList.add("symbol");
+    prevBtn.appendChild(prevBtnSymbol);
+    // prevBtn.setAttribute("onclick", `moveCarrouselBack(${categoryName}container)`);
 
-    const carrouselContent = document.createElement('div');
-    carrouselContent.classList.add('carrousel-content');
-    carrouselContent.setAttribute("id", `${categoryName}-container`);
-    carrousel.appendChild(carrouselContent);
-
-    const nextBtn = document.createElement('button');
+    const nextBtn = document.createElement('div');
+    nextBtn.classList.add('btn-next');
     nextBtn.classList.add('btn');
     nextBtn.setAttribute("name", "next");
     nextBtn.setAttribute("id", "right");
-    nextBtn.setAttribute("onclick", `moveCarrouselForward()`);
-    nextBtn.innerHTML = "next";
-    carrousel.appendChild(nextBtn);
+    const nextBtnSymbol = document.createElement("div");
+    nextBtnSymbol.innerHTML = "&#8250;";
+    nextBtnSymbol.classList.add("symbol");
+    nextBtn.appendChild(nextBtnSymbol);
 
-    console.log(categoryName + "-container");
-
+    // nextBtn.setAttribute("onclick", `moveCarrouselForward(${categoryName}container)`);
     const categoryData = await fetchCategories(categoryName, numberFilms);
 
-    // crée un article pour chaque film
+    //* crée un article pour chaque film
     for (let i in categoryData) {
         const ficheFilm = document.createElement('article');
         const filmCover = document.createElement('img');
-        const filmInfoBtn = document.createElement('button');
+
 
         ficheFilm.classList.add('film-article');
+        // ficheFilm.setAttribute("onclick", `openModal(${categoryData[i]["id"]})`);
         filmCover.src = categoryData[i]["image_url"];
-        filmInfoBtn.classList.add('modalBtn');
-        filmInfoBtn.classList.add('btn');
-        filmInfoBtn.setAttribute("onclick", `openModal(${categoryData[i]["id"]})`);
-        filmInfoBtn.innerHTML = "more info";
+        // filmCover.classList.add('film-article');
+        filmCover.setAttribute("onclick", `openModal(${categoryData[i]["id"]})`);
 
-        carrouselContent.appendChild(ficheFilm);
-        ficheFilm.appendChild(filmInfoBtn);
+        // carrousel.appendChild(filmCover);
+        carrousel.appendChild(ficheFilm);
         ficheFilm.appendChild(filmCover);
-
-        const ficheFilmWidth = ficheFilm.getBoundingClientRect().width;
-
-        ficheFilm.style.left = ficheFilmWidth * i + "px";
-
-    };
-}
-
-// controle du Carrousel
-function moveCarrouselBack() {
-    let fichesCarousel = document.getElementsByClassName('film-article');
-    let listFichesCarousel = Array(...fichesCarousel);
-    let ficheFilmWidth = listFichesCarousel[0].getBoundingClientRect().width;
-    console.log(ficheFilmWidth);
-
-
-    for (let i in listFichesCarousel) {
-        const ficheWidth = listFichesCarousel[i].getBoundingClientRect().width;
-        const currentPosition = listFichesCarousel[i].style.left;
-        const cal = ficheWidth - currentPosition;
-        console.log(cal);
-        console.log(ficheWidth);
-        console.log(currentPosition);
-        listFichesCarousel[i].style.left = currentPosition - ficheWidth + 'px';
     };
 
+    sectionCategories.appendChild(category);
+    category.appendChild(categoryTitle);
+    category.appendChild(prevBtn);
+    category.appendChild(nextBtn);
+    category.appendChild(carrouselcontainer);
+    carrouselcontainer.appendChild(carrousel);
 
+    //répartion des éléments
+    const fiches = carrousel.querySelectorAll(".film-article");
+    let count = 0, positionLeft = 0, spaceRight = 0, dynamic = 0, marginLeft = 0, ef = 0;
 
-    // for (let i in Array(...carousel)) {
+    spaceRight = fiches[0].offsetWidth * (fiches.length);
+    dynamic = fiches[0].offsetWidth * (fiches.length);
+    carrousel.style.width = dynamic + "px";
+    nextBtn.style.height = fiches[0].offsetHeight + "px";
+    prevBtn.style.height = fiches[0].offsetHeight + "px";
 
-    //     carrousel[i].style.left = ficheFilmWidth * i + "px";
-    // };
+    prevBtn.addEventListener("click", moveCarrouselBack);
+    nextBtn.addEventListener("click", moveCarrouselForward);
 
+    function moveCarrouselForward() {
+        spaceFinal = spaceRight - category.offsetWidth;
+        if (spaceFinal > 0) {
+            positionLeft -= 250;
+            marginLeft = positionLeft;
+            spaceRight = dynamic + positionLeft
 
+            ef = spaceRight - category.offsetWidth;
+            count++;
+            if (ef < 0) {
+                carrousel.style.marginLeft = `${positionLeft + Math.abs(ef)}px`;
+            } else {
+                carrousel.style.marginLeft = `${positionLeft}px`;
+            }
+        }
+    }
+
+    function moveCarrouselBack() {
+        if (count > 0) {
+            positionLeft += 250;
+            carrousel.style.marginLeft = `${positionLeft}px`;
+            marginLeft = positionLeft;
+            spaceRight = dynamic + positionLeft
+            count--;
+        }
+    }
 }
 
-// modal
-function openModal(movieId) {   // ajouter un paramètre pour identifier le film en question
+//* controle du Carrousel
+
+
+
+
+
+
+
+
+
+//* modal
+async function openModal(movieId) {   // ajouter un paramètre pour identifier le film en question
     let modal = document.getElementById("modal");
     let closeBtn = document.getElementsByClassName("close-btn")[0];
 
-    fetchModalData(movieId)
+    await fetchModalData(movieId)
 
     modal.style.display = "block";
 
@@ -174,17 +197,15 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
     document.getElementById('modal-country').innerHTML = data["countries"]; // stocké sous forme de liste
     document.getElementById('modal-box-office').innerHTML = data["world_wide_gross_income"] + data["budget_currency"];
     document.getElementById('modal-cover').src = data["image_url"];
-
 }
 
 
 
 //* chargement de la page et màj des données
-
 window.addEventListener('load', () => {
     fetchBest()
-    createCarrouselByCat("Adventure", 10)
-    createCarrouselByCat("Animation", 3)
-    createCarrouselByCat("Sport", 7)
-    createCarrouselByCat("Sci-fi", 7)
+    createCarrouselByCat("Adventure", 20)
+    createCarrouselByCat("Animation", 10)
+    createCarrouselByCat("Sport", 10)
+    createCarrouselByCat("Sci-fi", 10)
 });
