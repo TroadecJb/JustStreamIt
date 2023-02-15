@@ -56,8 +56,8 @@ async function createCarrouselByCat(categoryName, numberFilms) {
     categoryTitle.classList.add("category-title");
     categoryTitle.innerHTML = categoryName;
 
-    const carrouselcontainer = document.createElement('div');
-    carrouselcontainer.classList.add('content-container');
+    const carrouselContainer = document.createElement('div');
+    carrouselContainer.classList.add('content-container');
 
     const carrousel = document.createElement('section');
     carrousel.classList.add('content');
@@ -89,7 +89,7 @@ async function createCarrouselByCat(categoryName, numberFilms) {
 
     //* crée un article pour chaque film
     for (let i in categoryData) {
-        const ficheFilm = document.createElement('article');
+        const ficheFilm = document.createElement('div');
         const filmCover = document.createElement('img');
 
 
@@ -108,8 +108,8 @@ async function createCarrouselByCat(categoryName, numberFilms) {
     category.appendChild(categoryTitle);
     category.appendChild(prevBtn);
     category.appendChild(nextBtn);
-    category.appendChild(carrouselcontainer);
-    carrouselcontainer.appendChild(carrousel);
+    category.appendChild(carrouselContainer);
+    carrouselContainer.appendChild(carrousel);
 
     //répartion des éléments
 
@@ -117,11 +117,13 @@ async function createCarrouselByCat(categoryName, numberFilms) {
     let count = 0, positionLeft = 0, spaceRight = 0, dynamic = 0, marginLeft = 0, ef = 0;
 
     const ficheWidth = fiches[0].offsetWidth;
+    console.log(ficheWidth)
     const ficheHeight = fiches[0].offsetHeight;
     spaceRight = ficheWidth * (fiches.length);
     dynamic = ficheWidth * (fiches.length);
-    carrousel.style.maxwidth = ficheWidth * 7 + "px";
-    carrousel.style.hmaxheight = ficheHeight + "px";
+    category.style.maxWidth = ficheWidth * 7 + "px";
+    carrouselContainer.style.maxWidth = ficheWidth * 7 + "px";
+    carrouselContainer.style.maxHeight = ficheHeight + "px";
     carrousel.style.width = dynamic + "px";
     nextBtn.style.height = fiches[0].offsetHeight + "px";
     prevBtn.style.height = fiches[0].offsetHeight + "px";
@@ -213,5 +215,6 @@ window.addEventListener('load', () => {
     createCarrouselByCat("Adventure", 10)
     createCarrouselByCat("Animation", 10)
     createCarrouselByCat("Sport", 10)
+    createCarrouselByCat("Romance", 10)
     createCarrouselByCat("Sci-fi", 10)
 });

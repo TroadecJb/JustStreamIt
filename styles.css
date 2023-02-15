@@ -3,37 +3,57 @@ html {
 }
 
 body {
-    background: rgb(0, 0, 0);
-    color: white;
-    font-family: "times new roman";
+    /* background: rgb(0, 0, 0); */
+    background-image: linear-gradient(to bottom, #d16ba5, #ee758d, #f98b75, #f5a664, #e4c364, #d1d36f, #bbe284, #a2ef9f, #8ef3b3, #7bf7c8, #6af9dd, #5ffbf1);
+    /* color: white; */
+    background-attachment: fixed;
+    font-family: 'Trebuchet MS', sans-serif;
     margin: 0;
 }
 
 /* Header */
 
 .header {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    /* flex-direction: row; */
+    /* border: #5ffbf1 solid; */
     height: 100px;
     width: 100%;
-    border: rgb(114, 63, 63) solid;
+
+
 }
 
-.header-logo {
-    margin-top: 10px;
+.header-logo img {
+    position: absolute;
+    top: 10px;
+    left: 100px;
+    max-height: 100px;
 }
 
-#logo {
-    height: auto;
-    object-fit: contain;
+.nav_bar {
+    position: absolute;
+    top: 2.5%;
+    right: 100px;
+    font-weight: bold;
+}
+
+ul>li {
+    display: inline-block;
+    list-style: none;
 }
 
 /* Best Movie */
 .best {
     display: flex;
     flex-direction: row;
-    background-color: blue;
+    background-color: rgba(255, 255, 255, 0.315);
+    border-radius: 30px;
     margin: auto;
     padding: 5% 2% 2% 5%;
-    width: 80%;
+    width: 50%;
+    box-shadow: rgba(141, 0, 235, 0.466) 0px 20px 30px -10px;
 }
 
 .best-movie-title {
@@ -50,6 +70,8 @@ body {
 
 /* Categories */
 .categories {
+    position: relative;
+    top: 80px;
     width: 80%;
     margin: auto;
 }
@@ -57,6 +79,7 @@ body {
 .category {
     margin: auto;
     position: relative;
+
 }
 
 .content-container {
@@ -65,13 +88,15 @@ body {
     position: relative;
 }
 
-.category-title {
+h2 {
     color: rgb(255, 255, 255);
+    text-shadow: rgb(195, 0, 255) 2px 1px;
 }
 
 .content {
     margin-left: 0px;
     transition: margin .2s ease-in-out;
+
 
 }
 
@@ -89,7 +114,7 @@ body {
 }
 
 .btn-next {
-    right: -50px;
+    right: -70px;
 }
 
 .btn-prev {
@@ -97,7 +122,7 @@ body {
 }
 
 .symbol {
-    transform: translateY(100%);
+    transform: translateY(50%);
 }
 
 .film-article {
@@ -123,6 +148,8 @@ body {
     transition: all .2s ease-in-out;
     opacity: 1;
     cursor: pointer;
+    z-index: 10;
+    box-shadow: rgba(240, 46, 170, 0.4) 0px 5px, rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px, rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
 }
 
 img {
@@ -143,16 +170,20 @@ img {
 }
 
 .modal-content {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    top: 0px;
+    left: 7.5%;
     background-color: #222222;
-    border-radius: 10px;
+    border-radius: 30px;
     margin: 15% auto;
-
     min-height: 50px;
-    max-height: 100%;
+    max-height: 50%;
     padding: 30px 30px 30px 30px;
-    width: 80%;
+    width: auto;
+    max-width: 80%;
     font-size: 25px;
-    overflow: auto;
 }
 
 
@@ -161,26 +192,42 @@ img {
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
     float: right;
     top: 0px;
+    height: 100%;
+    right: 0px;
 }
 
 
 
 .modal-text {
-    display: inline;
+    display: block;
+    position: relative;
+    overflow: scroll;
+    margin-right: auto;
+    padding: 10px 10px 10px 10px;
+    left: 0px;
+    width: 50%;
+    background-color: rgb(64, 73, 80);
+    line-height: 1em;
 
 }
-
 
 .modal-text h3 {
     font-size: 2rem;
 }
 
+.model-text p {
+    font-size: 10px;
+
+}
 
 .top-info {
     display: inline;
 }
 
-
+.close-btn {
+    font-size: 5em;
+    font-weight: bold;
+}
 
 
 strong {
@@ -197,7 +244,7 @@ strong {
 
 .btn:hover,
 .btn:focus {
-    color: rgb(255, 0, 0);
+    color: rgb(255, 18, 168);
     text-decoration: none;
     cursor: pointer;
 }
