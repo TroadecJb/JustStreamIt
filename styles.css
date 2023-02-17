@@ -292,17 +292,15 @@ img {
     font-size: 4rem;
 }
 
+.close-btn:hover {
+    color: rgb(255, 18, 168);
+}
+
 .info-text>div {
     margin: 10px 0;
 
 }
 
-.modalBtn {
-    color: #aaa;
-    float: right;
-    font-size: 3em;
-    font-weight: bold;
-}
 
 .symbol:hover,
 .symbol:focus {
