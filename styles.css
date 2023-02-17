@@ -8,10 +8,10 @@ html {
 }
 
 body {
-    /* background: rgb(0, 0, 0); */
+    /* background: linear-gradient(90deg, #d53369 0%, #daae51 100%); */
     background-image: linear-gradient(to bottom, #d16ba5, #ee758d, #f98b75, #f5a664, #e4c364, #d1d36f, #bbe284, #a2ef9f, #8ef3b3, #7bf7c8, #6af9dd, #5ffbf1);
-    /* color: white; */
-    background-attachment: fixed;
+
+    /* background-attachment: fixed; */
     font-family: 'Trebuchet MS', sans-serif;
 
 }
@@ -125,7 +125,7 @@ ul>li {
 
 h2 {
     color: rgb(255, 255, 255);
-    text-shadow: rgb(195, 0, 255) 2px 1px;
+    text-shadow: rgb(115, 0, 150) 2px 2px 2px;
 }
 
 .content {
