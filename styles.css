@@ -210,6 +210,7 @@ img {
     position: relative;
     min-height: 300px;
     min-width: 60%;
+    max-width: 70%;
     margin: auto;
     border-radius: 20px 0px 20px 20px;
     display: grid;
