@@ -33,19 +33,18 @@ async function fetchCategories(name, maxFilm) {
 
     const data = await response.json();
 
-    let movieData = Array(...data.results); // crée une liste à partir de la clef "results", avec les 5 premiers films(longueur d'une page get de l'api)
-
+    let movieData = Array(...data.results);
     if (movieData.length < maxFilm) {
         const secondResponse = await fetch(data.next);
         const secondData = await secondResponse.json();
         const listSecondData = Array(...secondData.results);
-        movieData.push(...listSecondData);
+        movieData.push(...listSecondData.slice(0, maxFilm));
     };
     return movieData;
 }
 
 //* Création des éléments carrousel
-async function createCarrouselByCat(catName, numberFilms) {
+async function createCarrouselByCat(catName, numberFilms, nbDisplay) {
     let cat = catName;
     if (catName == "Best-rated")
         cat = "";
@@ -76,7 +75,6 @@ async function createCarrouselByCat(catName, numberFilms) {
     prevBtnSymbol.innerHTML = "&#8249;";
     prevBtnSymbol.classList.add("symbol");
     prevBtn.appendChild(prevBtnSymbol);
-    // prevBtn.setAttribute("onclick", `moveCarrouselBack(${catName}container)`);
 
     const nextBtn = document.createElement('div');
     nextBtn.classList.add('btn-next');
@@ -88,7 +86,6 @@ async function createCarrouselByCat(catName, numberFilms) {
     nextBtnSymbol.classList.add("symbol");
     nextBtn.appendChild(nextBtnSymbol);
 
-    // nextBtn.setAttribute("onclick", `moveCarrouselForward(${catName}container)`);
     const categoryData = await fetchCategories(cat, numberFilms);
 
     //* crée un article pour chaque film
@@ -96,16 +93,15 @@ async function createCarrouselByCat(catName, numberFilms) {
         const ficheFilm = document.createElement('div');
         const filmCover = document.createElement('img');
 
-
         ficheFilm.classList.add('film-article');
 
         filmCover.src = categoryData[i]["image_url"];
         filmCover.classList.add('img-article');
         filmCover.setAttribute("onclick", `openModal(${categoryData[i]["id"]})`);
 
-        // carrousel.appendChild(filmCover);
-        carrousel.appendChild(ficheFilm);
         ficheFilm.appendChild(filmCover);
+        carrousel.appendChild(ficheFilm);
+
     };
 
     sectionCategories.appendChild(category);
@@ -118,15 +114,15 @@ async function createCarrouselByCat(catName, numberFilms) {
     //répartion des éléments
 
     const fiches = carrousel.querySelectorAll(".film-article");
+
     let count = 0, positionLeft = 0, spaceRight = 0, dynamic = 0, marginLeft = 0, ef = 0;
 
-    const ficheWidth = fiches[0].offsetWidth;
-    const ficheHeight = fiches[0].offsetHeight;
+    const ficheWidth = 180
 
     spaceRight = ficheWidth * (fiches.length);
     dynamic = ficheWidth * (fiches.length);
-    category.style.maxWidth = ficheWidth * 7 + "px";
-    carrouselContainer.style.maxWidth = ficheWidth * 7 + "px";
+    category.style.maxWidth = ficheWidth * nbDisplay + "px";
+    carrouselContainer.style.maxWidth = ficheWidth * nbDisplay + "px";
     carrousel.style.width = dynamic + "px";
     carrousel.style.maxHeight = 280 + "px";
     nextBtn.style.height = 280 + "px";
@@ -164,7 +160,7 @@ async function createCarrouselByCat(catName, numberFilms) {
 }
 
 //* modal
-async function openModal(movieId) {   // ajouter un paramètre pour identifier le film en question
+async function openModal(movieId) {
     let modal = document.getElementById("modal");
     let closeBtn = document.getElementsByClassName("close-btn")[0];
 
@@ -183,7 +179,7 @@ async function openModal(movieId) {   // ajouter un paramètre pour identifier l
     };
 }
 
-async function fetchModalData(movieId) { //ajouter paramètre pour identifier le film ?
+async function fetchModalData(movieId) {
     const response = await fetch(mainURL + movieId);
     const data = await response.json();
 
@@ -192,15 +188,15 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
     document.getElementById('movie-duration').innerHTML = data["duration"] + "mn";
     document.getElementById('movie-rated').innerHTML = data["rated"];
 
-    document.getElementById('movie-genre').innerHTML = data["genres"]; //stocké sous forme de liste
+    document.getElementById('movie-genre').innerHTML = data["genres"];
     document.getElementById('movie-imdb').innerHTML = data["imdb-score"] + "/10";
     document.getElementById('movie-desc').innerHTML = data["description"];
     const actors = document.getElementById('movie-actors');
     if (data["actors"] == "Unknown")
         actors.innerHTML = "";
     else
-        actors.innerHTML = data["actors"]; // stocké sous forme de liste
-    document.getElementById('movie-country').innerHTML = data["countries"]; // stocké sous forme de liste  
+        actors.innerHTML = data["actors"];
+    document.getElementById('movie-country').innerHTML = data["countries"];
 
     const boxOffice = document.getElementById('movie-box-office');
     if (data["world_wide_gross_income"] == null)
@@ -215,10 +211,10 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
 //* chargement de la page et màj des données
 window.addEventListener('load', () => {
     fetchBest()
-    createCarrouselByCat("Best-rated", 10)
-    createCarrouselByCat("Adventure", 10)
-    createCarrouselByCat("Animation", 10)
-    createCarrouselByCat("Sport", 10)
-    createCarrouselByCat("Romance", 10)
-    // createCarrouselByCat("Sci-fi", 10)
+    createCarrouselByCat("Best-rated", 7, 5)
+    createCarrouselByCat("Adventure", 7, 5)
+    createCarrouselByCat("Animation", 7, 5)
+    createCarrouselByCat("Sport", 7, 5)
+    createCarrouselByCat("Romance", 7, 5)
+    createCarrouselByCat("Sci-fi", 7, 5)
 });
