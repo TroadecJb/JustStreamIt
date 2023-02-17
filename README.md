@@ -1,1 +1,2 @@
-<img src="img/demo.webm" alt="website demo" />
+<video controls="true" allowfullscreen="true">
+    <source src="./img/demo.webm" type="video/webm">
