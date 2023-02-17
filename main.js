@@ -121,10 +121,8 @@ async function createCarrouselByCat(catName, numberFilms) {
     let count = 0, positionLeft = 0, spaceRight = 0, dynamic = 0, marginLeft = 0, ef = 0;
 
     const ficheWidth = fiches[0].offsetWidth;
-    console.log(ficheWidth)
-
     const ficheHeight = fiches[0].offsetHeight;
-    console.log(ficheHeight)
+
     spaceRight = ficheWidth * (fiches.length);
     dynamic = ficheWidth * (fiches.length);
     category.style.maxWidth = ficheWidth * 7 + "px";
@@ -165,16 +163,6 @@ async function createCarrouselByCat(catName, numberFilms) {
     }
 }
 
-//* controle du Carrousel
-
-
-
-
-
-
-
-
-
 //* modal
 async function openModal(movieId) {   // ajouter un paramètre pour identifier le film en question
     let modal = document.getElementById("modal");
@@ -203,12 +191,22 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
     document.getElementById('movie-year-dir').innerHTML = data["year"] + " - " + data["directors"];
     document.getElementById('movie-duration').innerHTML = data["duration"] + "mn";
     document.getElementById('movie-rated').innerHTML = data["rated"];
+
     document.getElementById('movie-genre').innerHTML = data["genres"]; //stocké sous forme de liste
     document.getElementById('movie-imdb').innerHTML = data["imdb-score"] + "/10";
     document.getElementById('movie-desc').innerHTML = data["description"];
-    document.getElementById('movie-actors').innerHTML = data["actors"]; // stocké sous forme de liste
+    const actors = document.getElementById('movie-actors');
+    if (data["actors"] == "Unknown")
+        actors.innerHTML = "";
+    else
+        actors.innerHTML = data["actors"]; // stocké sous forme de liste
     document.getElementById('movie-country').innerHTML = data["countries"]; // stocké sous forme de liste  
-    document.getElementById('movie-box-office').innerHTML = data["world_wide_gross_income"] + data["budget_currency"];
+
+    const boxOffice = document.getElementById('movie-box-office');
+    if (data["world_wide_gross_income"] == null)
+        boxOffice.innerHTML = "";
+    else
+        boxOffice.innerHTML = data["world_wide_gross_income"] + " " + data["budget_currency"];
     document.getElementById('movie-cover').src = data["image_url"];
 }
 

@@ -209,7 +209,7 @@ img {
 .modal-content {
     position: relative;
     min-height: 300px;
-    width: 60%;
+    min-width: 60%;
     margin: auto;
     border-radius: 20px 0px 20px 20px;
     display: grid;
@@ -266,8 +266,14 @@ img {
     border-radius: .3em;
 }
 
+.info-actors-movie {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .info-actors-movie #movie-actors {
-    line-height: 2rem;
+    line-height: 1rem;
     color: #47a895;
 }
 
