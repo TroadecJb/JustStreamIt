@@ -118,15 +118,17 @@ async function createCarrouselByCat(categoryName, numberFilms) {
 
     const ficheWidth = fiches[0].offsetWidth;
     console.log(ficheWidth)
+
     const ficheHeight = fiches[0].offsetHeight;
+    console.log(ficheHeight)
     spaceRight = ficheWidth * (fiches.length);
     dynamic = ficheWidth * (fiches.length);
     category.style.maxWidth = ficheWidth * 7 + "px";
     carrouselContainer.style.maxWidth = ficheWidth * 7 + "px";
-    carrouselContainer.style.maxHeight = ficheHeight + "px";
     carrousel.style.width = dynamic + "px";
-    nextBtn.style.height = fiches[0].offsetHeight + "px";
-    prevBtn.style.height = fiches[0].offsetHeight + "px";
+    carrousel.style.maxHeight = 280 + "px";
+    nextBtn.style.height = 280 + "px";
+    prevBtn.style.height = 280 + "px";
 
     prevBtn.addEventListener("click", moveCarrouselBack);
     nextBtn.addEventListener("click", moveCarrouselForward);
@@ -176,7 +178,7 @@ async function openModal(movieId) {   // ajouter un paramètre pour identifier l
 
     await fetchModalData(movieId)
 
-    modal.style.display = "block";
+    modal.style.display = "grid";
 
     closeBtn.onclick = function () {
         modal.style.display = "none";
@@ -193,18 +195,17 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
     const response = await fetch(mainURL + movieId);
     const data = await response.json();
 
-    document.getElementById('modal-title').innerHTML = data["title"];
-    document.getElementById('modal-year').innerHTML = data["year"];
-    document.getElementById('modal-rated').innerHTML = data["rated"];
-    document.getElementById('modal-imdb').innerHTML = data["imdb-score"] + " /10";
-    document.getElementById('modal-duration').innerHTML = data["duration"] + " min";
-    document.getElementById('modal-director').innerHTML = data["directors"]; //stocké sous forme de liste
-    document.getElementById('modal-actors').innerHTML = data["actors"]; // stocké sous forme de liste
-    document.getElementById('modal-pitch').innerHTML = data["description"];
-    document.getElementById('modal-genre').innerHTML = data["genres"]; //stocké sous forme de liste
-    document.getElementById('modal-country').innerHTML = data["countries"]; // stocké sous forme de liste
-    document.getElementById('modal-box-office').innerHTML = data["world_wide_gross_income"] + data["budget_currency"];
-    document.getElementById('modal-cover').src = data["image_url"];
+    document.getElementById('movie-title').innerHTML = data["title"];
+    document.getElementById('movie-year-dir').innerHTML = data["year"] + " - " + data["directors"];
+    document.getElementById('movie-duration').innerHTML = data["duration"] + "mn";
+    document.getElementById('movie-rated').innerHTML = data["rated"];
+    document.getElementById('movie-genre').innerHTML = data["genres"]; //stocké sous forme de liste
+    document.getElementById('movie-imdb').innerHTML = data["imdb-score"] + "/10";
+    document.getElementById('movie-desc').innerHTML = data["description"];
+    document.getElementById('movie-actors').innerHTML = data["actors"]; // stocké sous forme de liste
+    document.getElementById('movie-country').innerHTML = data["countries"]; // stocké sous forme de liste  
+    document.getElementById('movie-box-office').innerHTML = data["world_wide_gross_income"] + data["budget_currency"];
+    document.getElementById('movie-cover').src = data["image_url"];
 }
 
 

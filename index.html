@@ -43,31 +43,39 @@
     <div class="modal" id="modal">
         <div class="modal-content">
             <div class="modal-text">
-                <h3 class="title" id="modal-title">""</h3>
-                <div class="top-info">
-                    <p class="year" id="modal-year">""</p>
-                    <p class="rated" id="modal-rated">""</p>
-                    <p class="duration" id="modal-duration">""</p>
-                    <p id="modal-genre">""</p>
-                    <strong>IMDB: </strong>
-                    <p class="imdb-score" id="modal-imdb">""</p>
+                <div class="info-header">
+                    <div class="movie-info">
+                        <h3 id="movie-title">""</h3>
+                        <span class="modal-duration" id="movie-duration">## mn</span>
+                        <span class="modal-rated" id="movie-rated">""</span>
+                    </div>
+                    <div class="year-dir">
+                        <h4 id="movie-year-dir">""</h4>
+                    </div>
+                    <div class="score-genres">
+                        <p id="movie-imdb">##/10</p>
+                        <p id="movie-genre">""</p>
+                    </div>
                 </div>
-                <strong>Director&#183;s: </strong>
-                <p class="director" id="modal-director">""</p><br>
-                <strong>Actors: </strong>
-                <p id="modal-actors">""</p><br>
-                <strong>Synopsis: </strong>
-                <p id="modal-pitch">""</p><br>
-                <strong>Country: </strong>
-                <p id="modal-country">""</p><br>
-                <strong>Box office: </strong>
-                <p id="modal-box-office">""</p><br>
+                <div class="info-text">
+                    <div class="info-desc">
+                        <p id="movie-desc">""</p>
+                    </div>
+                    <div class="info-actors-movie">
+                        <p id="movie-actors">""</p>
+                        <p id="movie-country">""</p>
+                    </div>
+                    <div class="info-box-office">
+                        <p id="movie-box-office">""</p>
+                    </div>
+                </div>
             </div>
             <div class="modal-cover">
-                <img src="img/missing_file.png" alt="" id="modal-cover">
+                <img src="img/missing_file.png" alt="" id="movie-cover">
             </div>
             <span class="close-btn btn">&times;</span>
         </div>
+
     </div>
 
     <script src="main.js"></script>
