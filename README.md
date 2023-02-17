@@ -5,7 +5,7 @@ Netflix-like interface (front-page) using Javascript (vanilla).
     
 # Environment
 Clone or download the [API OCMovies](https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR).
-To install it refer to the [documentation](https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR#installation-1).
+To install it refer to the [french documentation](https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR#installation-1) or the [english documentation](https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR#installation).
 
 # How to use it
 Just open the `index.html` in a browser.
