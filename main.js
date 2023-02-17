@@ -45,23 +45,27 @@ async function fetchCategories(name, maxFilm) {
 }
 
 //* Création des éléments carrousel
-async function createCarrouselByCat(categoryName, numberFilms) {
+async function createCarrouselByCat(catName, numberFilms) {
+    let cat = catName;
+    if (catName == "Best-rated")
+        cat = "";
+
     const sectionCategories = document.getElementById("categories");
 
     const category = document.createElement('section');
     category.classList.add('category');
-    category.setAttribute("id", `${categoryName}`);
+    category.setAttribute("id", `${catName}`);
 
     const categoryTitle = document.createElement('h2');
     categoryTitle.classList.add("category-title");
-    categoryTitle.innerHTML = categoryName;
+    categoryTitle.innerHTML = catName;
 
     const carrouselContainer = document.createElement('div');
     carrouselContainer.classList.add('content-container');
 
     const carrousel = document.createElement('section');
     carrousel.classList.add('content');
-    carrousel.setAttribute("id", `${categoryName}content`);
+    carrousel.setAttribute("id", `${catName}content`);
 
     const prevBtn = document.createElement('div');
     prevBtn.classList.add('btn-prev');
@@ -72,7 +76,7 @@ async function createCarrouselByCat(categoryName, numberFilms) {
     prevBtnSymbol.innerHTML = "&#8249;";
     prevBtnSymbol.classList.add("symbol");
     prevBtn.appendChild(prevBtnSymbol);
-    // prevBtn.setAttribute("onclick", `moveCarrouselBack(${categoryName}container)`);
+    // prevBtn.setAttribute("onclick", `moveCarrouselBack(${catName}container)`);
 
     const nextBtn = document.createElement('div');
     nextBtn.classList.add('btn-next');
@@ -84,8 +88,8 @@ async function createCarrouselByCat(categoryName, numberFilms) {
     nextBtnSymbol.classList.add("symbol");
     nextBtn.appendChild(nextBtnSymbol);
 
-    // nextBtn.setAttribute("onclick", `moveCarrouselForward(${categoryName}container)`);
-    const categoryData = await fetchCategories(categoryName, numberFilms);
+    // nextBtn.setAttribute("onclick", `moveCarrouselForward(${catName}container)`);
+    const categoryData = await fetchCategories(cat, numberFilms);
 
     //* crée un article pour chaque film
     for (let i in categoryData) {
@@ -213,9 +217,10 @@ async function fetchModalData(movieId) { //ajouter paramètre pour identifier le
 //* chargement de la page et màj des données
 window.addEventListener('load', () => {
     fetchBest()
+    createCarrouselByCat("Best-rated", 10)
     createCarrouselByCat("Adventure", 10)
     createCarrouselByCat("Animation", 10)
     createCarrouselByCat("Sport", 10)
     createCarrouselByCat("Romance", 10)
-    createCarrouselByCat("Sci-fi", 10)
+    // createCarrouselByCat("Sci-fi", 10)
 });
