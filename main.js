@@ -38,9 +38,9 @@ async function fetchCategories(name, maxFilm) {
         const secondResponse = await fetch(data.next);
         const secondData = await secondResponse.json();
         const listSecondData = Array(...secondData.results);
-        movieData.push(...listSecondData.slice(0, maxFilm));
+        movieData.push(...listSecondData);
     };
-    return movieData;
+    return movieData.slice(0, maxFilm);
 }
 
 //* Création des éléments carrousel
@@ -94,7 +94,6 @@ async function createCarrouselByCat(catName, numberFilms, nbDisplay) {
         const filmCover = document.createElement('img');
 
         ficheFilm.classList.add('film-article');
-
         filmCover.src = categoryData[i]["image_url"];
         filmCover.classList.add('img-article');
         filmCover.setAttribute("onclick", `openModal(${categoryData[i]["id"]})`);
@@ -189,7 +188,7 @@ async function fetchModalData(movieId) {
     document.getElementById('movie-rated').innerHTML = data["rated"];
 
     document.getElementById('movie-genre').innerHTML = data["genres"];
-    document.getElementById('movie-imdb').innerHTML = data["imdb-score"] + "/10";
+    document.getElementById('movie-imdb').innerHTML = data["imdb_score"] + "/10";
     document.getElementById('movie-desc').innerHTML = data["description"];
     const actors = document.getElementById('movie-actors');
     if (data["actors"] == "Unknown")
@@ -206,8 +205,6 @@ async function fetchModalData(movieId) {
     document.getElementById('movie-cover').src = data["image_url"];
 }
 
-
-
 //* chargement de la page et màj des données
 window.addEventListener('load', () => {
     fetchBest()
@@ -216,5 +213,7 @@ window.addEventListener('load', () => {
     createCarrouselByCat("Animation", 7, 5)
     createCarrouselByCat("Sport", 7, 5)
     createCarrouselByCat("Romance", 7, 5)
-    createCarrouselByCat("Sci-fi", 7, 5)
+    createCarrouselByCat("History", 7, 5)
+    createCarrouselByCat("Thriller", 7, 5)
+    createCarrouselByCat("Sci-fi", 10, 5)
 });
